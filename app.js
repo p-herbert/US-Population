@@ -6,8 +6,7 @@ $(function() {
         total = 0
   $.ajax({
     type: 'GET',
-    url:url,
-    async: 0,
+    url: url,
     success: data => console.log(data),
     error: error => console.log(error) });
 
