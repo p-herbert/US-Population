@@ -4,7 +4,7 @@ $(function() {
   function sumTotal(states) {
     let total = 0;
 
-    states.forEach(state => (total += parseInt(state[0], 10)));
+    states.forEach(state => (total += state.pop));
 
     return total;
   }
