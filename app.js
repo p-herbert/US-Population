@@ -31,12 +31,25 @@ $(function() {
     return states.sort((stateA, stateB) => stateA.pop < stateB.pop);
   }
 
-  function makeTable(states) {
-    const largest = sortByPopulation(states)[0];
-
-    $('#population').append(`<tr><th>Total</th><td>${sumTotal(states)}</td></tr>`);
-    $('#population').append(`<tr><th>Max</th><td>${largest.state}, ${largest.geo}</td></tr>`);
+  function addRow(state) {
+    $('#population > tbody').append(`<tr><<td>${state.state}</td><td>${state.geo}</td><td>${state.pop}</td></tr>`);
   }
+
+  function makeTable(states) {
+//     const largest = sortByPopulation(states)[0];
+    const total = {
+      state: 'Total',
+      pop: sumTotal(states),
+      geo: 'N/A' };
+
+    states.forEach(state => addRow(state));
+
+    addRow(total);
+
+//     $('#population').append(`<tr><th>Total</th><td>${sumTotal(states)}</td></tr>`);
+//     $('#population').append(`<tr><th>Max</th><td>${largest.state}, ${largest.geo}</td></tr>`);
+  }
+
 
   $.ajax({
     type: 'GET',
