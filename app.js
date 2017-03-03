@@ -1,7 +1,6 @@
 $(function() {
   const url = "https://api.census.gov/data/2015/pep/population?get=POP,GEONAME&for=state";
 
-                jQuery.support.cors = true;
         results = []
         total = 0
   $.ajax({
