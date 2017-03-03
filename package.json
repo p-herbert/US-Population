@@ -1,0 +1,14 @@
+{
+  "name": "us-population",
+  "version": "1.0.0",
+  "description": "US total population and most populous state (2015 data)",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Peter Herbert (p-herbert)",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^3.16.1"
+  }
+}
