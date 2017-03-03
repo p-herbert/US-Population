@@ -31,10 +31,17 @@ $(function() {
     return states.sort((stateA, stateB) => stateA.pop < stateB.pop);
   }
 
+  function makeTable(states) {
+    const largest = sortByPopulation(states)[0];
+
+    $('#population').append(`<tr><th>Total</th><td>${sumTotal(states)}</td></tr>`);
+    $('#population').append(`<tr><th>Max</th><td>${largest.state}, ${largest.geo}</td></tr>`);
+  }
+
   $.ajax({
     type: 'GET',
     url: url,
-    success: data => console.log(data),
+    success: data => makeTable(normalize(data)),
     error: error => console.log(error) });
 });
 
