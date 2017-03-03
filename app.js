@@ -13,17 +13,14 @@ $(function() {
     // Remove header
     data.shift();
 
-    function tag(strings, local, region, country) {
-      return local === undefined ? 'Territory, United States' : `${local}, ${region}, ${country}`;
-    }
-
     return data.map((state) => {
       const geo = state[1].split(',');
 
       return {
-        state: geo[0],
+        name: geo[0],
         pop: parseInt(state[0], 10),
-        geo: tag`${geo[2]}${geo[3]}${geo[4]}` };
+        division: geo[2] || 'N/A',
+        region: geo[3] || 'N/A' };
     });
   }
 
@@ -32,24 +29,21 @@ $(function() {
   }
 
   function addRow(state) {
-    $('#population > tbody').append(`<tr><<td>${state.state}</td><td>${state.geo}</td><td>${state.pop}</td></tr>`);
+    $('#population > tbody')
+      .append(`<tr><<td>${state.name}</td><td>${state.region}</td><<td>${state.division}</td><td>${state.pop}</td></tr>`);
   }
 
   function makeTable(states) {
-//     const largest = sortByPopulation(states)[0];
     const total = {
-      state: 'Total',
+      name: 'Total',
       pop: sumTotal(states),
-      geo: 'N/A' };
+      division: 'N/A',
+      region: 'N/A' };
 
     states.forEach(state => addRow(state));
 
     addRow(total);
-
-//     $('#population').append(`<tr><th>Total</th><td>${sumTotal(states)}</td></tr>`);
-//     $('#population').append(`<tr><th>Max</th><td>${largest.state}, ${largest.geo}</td></tr>`);
   }
-
 
   $.ajax({
     type: 'GET',
