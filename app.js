@@ -27,6 +27,10 @@ $(function() {
     });
   }
 
+  function sortByPopulation(states) {
+    return states.sort((stateA, stateB) => stateA.pop < stateB.pop);
+  }
+
   $.ajax({
     type: 'GET',
     url: url,
