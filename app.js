@@ -46,11 +46,10 @@ $(function() {
   // Flip = 1 sort descending
   let flip = -1;
 
-  $.ajax({
-    type: 'GET',
-    url: url,
-    success: data => makeTable(normalize(data)),
-    error: error => console.log(error) }).done((data) => {
+  $.get(url)
+    .then(data => normalize(data))
+    .then(data => makeTable(data))
+    .done((data) => {
       // Sort by population
       $('#population > thead').find('th').eq(3).on('click', (event) => {
         const rows = $('#population > tbody > tr:gt(0)').get();
@@ -61,6 +60,7 @@ $(function() {
 
         flip *= -1;
       });
-    });
+    })
+    .fail(error => console.log(error));
 });
 
