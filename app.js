@@ -40,28 +40,27 @@ $(function() {
 
     addRow(total);
     states.forEach(state => addRow(state));
-
   }
-
-  $.ajax({
-    type: 'GET',
-    url: url,
-    success: data => makeTable(normalize(data)),
-    error: error => console.log(error) });
 
   // Flip = -1 sort ascending
   // Flip = 1 sort descending
   let flip = -1;
 
-  // Sort by population
-  $('#population > thead').find('th').eq(3).on('click', (event) => {
-    const rows = $('#population > tbody > tr:gt(0)').get();
+  $.ajax({
+    type: 'GET',
+    url: url,
+    success: data => makeTable(normalize(data)),
+    error: error => console.log(error) }).done((data) => {
+      // Sort by population
+      $('#population > thead').find('th').eq(3).on('click', (event) => {
+        const rows = $('#population > tbody > tr:gt(0)').get();
 
-    rows.sort((a, b) => flip * ($(b).find('td').eq(3).text() - $(a).find('td').eq(3).text()));
+        rows.sort((a, b) => flip * ($(b).find('td').eq(3).text() - $(a).find('td').eq(3).text()));
 
-    $.each(rows, (idx, row) => $('#population > tbody').append(row));
+        $.each(rows, (idx, row) => $('#population > tbody').append(row));
 
-    flip *= -1;
-  });
+        flip *= -1;
+      });
+    });
 });
 
