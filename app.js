@@ -24,25 +24,23 @@ $(function() {
     });
   }
 
-  function sortByPopulation(states) {
-    return states.sort((stateA, stateB) => stateA.pop < stateB.pop);
-  }
-
   function addRow(state) {
     $('#population > tbody')
       .append(`<tr><<td>${state.name}</td><td>${state.region}</td><<td>${state.division}</td><td>${state.pop}</td></tr>`);
   }
 
   function makeTable(states) {
+    states.sort((stateA, stateB) => stateA.pop < stateB.pop);
+
     const total = {
       name: 'Total',
       pop: sumTotal(states),
       division: 'N/A',
       region: 'N/A' };
 
+    addRow(total);
     states.forEach(state => addRow(state));
 
-    addRow(total);
   }
 
   $.ajax({
@@ -50,5 +48,20 @@ $(function() {
     url: url,
     success: data => makeTable(normalize(data)),
     error: error => console.log(error) });
+
+  // Flip = -1 sort ascending
+  // Flip = 1 sort descending
+  let flip = -1;
+
+  // Sort by population
+  $('#population > thead').find('th').eq(3).on('click', (event) => {
+    const rows = $('#population > tbody > tr:gt(0)').get();
+
+    rows.sort((a, b) => flip * ($(b).find('td').eq(3).text() - $(a).find('td').eq(3).text()));
+
+    $.each(rows, (idx, row) => $('#population > tbody').append(row));
+
+    flip *= -1;
+  });
 });
 
