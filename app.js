@@ -42,24 +42,54 @@ $(function() {
     states.forEach(state => addRow(state));
   }
 
-  // Flip = -1 sort ascending
-  // Flip = 1 sort descending
-  let flip = -1;
+  function sortByColumn(colNumber) {
+    // Flip = -1 sort ascending
+    // Flip = 1 sort descending
+    let flip = -1;
 
-  $.get(url)
-    .then(data => normalize(data))
-    .then(data => makeTable(data))
-    .done((data) => {
-      // Sort by population
-      $('#population > thead').find('th').eq(3).on('click', (event) => {
+      return $('#population > thead').find('th').eq(colNumber).on('click', (event) => {
         const rows = $('#population > tbody > tr:gt(0)').get();
 
-        rows.sort((a, b) => flip * ($(b).find('td').eq(3).text() - $(a).find('td').eq(3).text()));
+        rows.sort((a, b) => {
+          let aValue = $(a).find('td').eq(colNumber).text();
+          let bValue = $(b).find('td').eq(colNumber).text();
+
+          // If string is an interger then convert
+          aValue = !isNaN(aValue) ? parseInt(aValue, 10) : aValue;
+          bValue = !isNaN(bValue) ? parseInt(bValue, 10) : bValue;
+
+          if (bValue < aValue) {
+            return flip * -1;
+          }
+
+          if (bValue > aValue) {
+            return flip * 1;
+          }
+
+          return 0;
+        });
 
         $.each(rows, (idx, row) => $('#population > tbody').append(row));
 
         flip *= -1;
       });
+  }
+
+  $.get(url)
+    .then(data => normalize(data))
+    .then(data => makeTable(data))
+    .done((data) => {
+      // Sort by state
+      sortByColumn(0);
+
+      // Sort by region
+      sortByColumn(1);
+
+      // Sort by division
+      sortByColumn(2);
+
+      // Sort by population
+      sortByColumn(3);
     })
     .fail(error => console.log(error));
 });
